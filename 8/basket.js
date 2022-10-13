@@ -7,7 +7,6 @@ document.querySelector('.cartIcon').addEventListener('click', event => {
 let bodyBas = {};
 let sum;
 let total;
-//итоговое кол-во
 document.querySelector('.featuredItems').addEventListener('click', event => {
 	if (event.target.parentNode.tagName == 'BUTTON' ||  event.target.tagName == 'BUTTON'){
 		const c = document.querySelector('.cartIconWrap').querySelector('span');
@@ -23,19 +22,30 @@ function addToCart(id, name, price) {
 	total = 0;
 	sum = 0;
 	let key = id;
-	let basketRows = document.querySelector('.basketRow').children;
+	let basketRows = document.querySelector('.basket');
 	if ( key in bodyBas){
 		bodyBas[id].count += 1;
-		basketRows[1].querySelector('span#1.basketRow').innerText = bodyBas[id].count;
-
+		document.getElementById(`${key}`).childNodes[1].innerHTML = bodyBas[id].count;
+		document.getElementById(`${key}`).childNodes[3].innerHTML = bodyBas[id].count * price;
 	}else {
 		bodyBas[id] = a;
 		let bodySum = bodyBas[id].count * bodyBas[id].price;
-		basketRows[0].insertAdjacentHTML('beforeEnd', `<br><span class="basketRow" id=${bodyBas[id].id}>${bodyBas[id].name} </span>`);
-		basketRows[1].insertAdjacentHTML('beforeEnd', `<br><span class="basketRow" id=${bodyBas[id].id}>${bodyBas[id].count}</span>`);
-		basketRows[2].insertAdjacentHTML('beforeEnd', `<br><span class="basketRow" id=${bodyBas[id].id}>${bodyBas[id].price}</span>`);
-		basketRows[3].insertAdjacentHTML('beforeEnd', `<br><span class="basketRow" id=${bodyBas[id].ids}>${bodySum}</span>`);
-
+		let basStr = document.createElement('div');
+		basStr.className = 'basketRow';
+		basStr.id = key;
+		document.querySelector('.basketTotal').before(basStr);
+		let nameStr = document.createElement('div');
+		nameStr.innerHTML = name;
+		let countStr = document.createElement('div');
+		countStr.innerHTML = 1;
+		let priceStr = document.createElement('div');
+		priceStr.innerHTML = price;
+		let sumStr = document.createElement('div');
+		sumStr.innerHTML = price;
+		basStr.append(nameStr);
+		basStr.append(countStr);
+		basStr.append(priceStr);
+		basStr.append(sumStr);
 	};
 	for (let key1 in bodyBas){
 		total += bodyBas[key1].count;
